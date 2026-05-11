@@ -1,0 +1,112 @@
+\usepackage{bm}
+%Para fotos y eso
+\usepackage{graphicx}
+%Para listas
+\usepackage{enumitem}
+%Para fórmulas y símbolos
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{aliascnt}
+%Para teoremas y demostraciones
+\usepackage{amsthm}
+%Para cuadraditos :)
+\usepackage{mdframed}
+%Headers y footers
+\usepackage{fancyhdr}
+%Para manejar el formato del papel
+\usepackage{geometry}
+%Manejo de color
+\usepackage{color}
+%Hipervínculos
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\usepackage[nameinlink]{cleveref}
+%cajitas
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{listings, breakable, skins, theorems}
+\usepackage{float}
+%tikz
+\usepackage{tikz,tikz-cd}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{Capítulo \thechapter}{1em}{}
+
+\usepackage{graphicx,xcolor}
+
+\usetikzlibrary{arrows.meta, positioning,calc, shapes.geometric}
+%Hace setup de todos los hipervínculos del proyecto
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=black,
+}
+\geometry{letterpaper,margin=1in}
+%SÍMBOLOS MATEMÁTICOS
+%Conjuntos N,Z,Q,R,C:
+\newcommand{\N}{\mathbb{N}}
+    \newcommand{\Z}{\mathbb{Z}}
+    \newcommand{\Q}{\mathbb{Q}}
+    \newcommand{\R}{\mathbb{R}}
+    \newcommand{\C}{\mathbb{C}}
+    \newcommand{\F}{\mathbb{F}}
+    \newcommand{\E}{\mathbb{E}}
+    \newcommand{\Pp}{\mathbb{P}}
+%Mathcal
+\newcommand{\gL}{\mathcal{L}}
+\newcommand{\gF}{\mathcal{F}}
+\newcommand{\gU}{\mathcal{U}}
+\newcommand{\gQ}{\mathcal{Q}}
+\newcommand{\gG}{\mathcal{G}}
+\newcommand{\gC}{\mathcal{C}}
+\newcommand{\gT}{\mathcal{T}}
+\newcommand{\gP}{\mathcal{P}}
+\newcommand{\gB}{\mathcal{B}}
+\newcommand{\gS}{\mathcal{S}}
+\newcommand{\gO}{\mathcal{O}}
+%Conjunto potencia
+\newcommand{\powerset}[1]{\mathcal{P}(#1)}
+%Para conjuntos
+\newcommand{\set}[1]{\left\{#1\right\}}
+%Función f:A->B
+\newcommand{\func}[3]{#1: #2 \to #3}
+%Vector cero
+\newcommand{\zerov}{\overline{0}}
+%Una lista indexada
+\newcommand{\vectorlist}[2]{#1_1,\dots,#1_{#2}}
+%Una combinación lineal
+\newcommand{\lcombination}[3]{#1_1#2_1+#1_2#2_2+\dots+#1_{#3}#2_{#3}}
+
+%Una lgualdad indexada de elementos, el tercer elemento es distinto del resto
+\newcommand{\equallist}[3]{#1_1=#1_2=\dots=#1_{#2}=#3}
+%Vector en F^2
+\newcommand{\twovector}[2]{\begin{pmatrix}
+#1\\
+#2
+\end{pmatrix}}
+%Vector columna con n entradas
+\newcommand{\coordvector}[2]{\begin{pmatrix}
+#1_1\\
+#1_2\\
+\vdots\\
+#1_{#2}
+\end{pmatrix}}
+%Inverso
+\newcommand{\minv}[1]{#1^{-1}}
+%Suma
+\newcommand{\summ}[3]{\sum_{#1=#2}^{#3}}
+%Representación matricial de una transformación lineal
+\newcommand{\matrep}[3]{[#1]_{#2}^{#3}}
+%Subsección no enumerada se añade a la tabla de contenidos.
+\newcommand{\nsubsection}[1]{
+\subsection*{#1}
+\addcontentsline{toc}{subsection}{#1}
+}
+
+% Enteros módulo n
+\newcommand{\Zn}[1]{\Z/#1\Z}
+%un m-ciclo
+\newcommand{\mcycle}[2]{(#1_1\spa #1_2\spa \dots \spa #1_{#2})}
+%grupo cíclico
+\newcommand{\cyclicgrp}[1]{\langle #1 \rangle}
+
+\newcommand{\charsbgrp}{\ \text{char}\ }

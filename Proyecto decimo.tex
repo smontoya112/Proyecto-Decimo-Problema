@@ -1,0 +1,241 @@
+\documentclass{article}
+\input{comanditos}
+\usepackage{graphicx} % Required for inserting images
+
+\title{Proyecto Decimo Problema}
+\author{Juan Camilo Solano, Nicolas Hernandez Derchhhhhh, Samuel Montoya Salazar}
+\date{March 2026}
+% Define English "lemma" environment to match usage \begin{lemma}...
+\newtheorem{lemma}{Lema}
+\newenvironment{dem}{\par\noindent\textbf{Dem.}\par}{\hfill$\square$\par}
+\newenvironment{teo}{\par\noindent\textbf{Teorema.}\par}{\hfill$\square$\par}
+\newenvironment{lem}{\par\noindent\textbf{Lema.}\par}{\hfill$\square$\par}
+\newenvironment{deff}{\par\noindent\textbf{Definición.}\par}{\hfill$\square$\par}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+    En este documento buscamos hacer una demostracion a cabalidad de la existencia de un algoritmo polinomial
+    deterministico para determinar si un numero es primo o no.
+\end{abstract}
+
+\section{Historia de como encontrar primos}
+A lo largo de la historia, los matematicos han desarrollado un
+interes intrinseco por encontrar numeros primos. Sus propiedades
+abarcan todas las areas de las matematicas, llegando desde su
+origen la teoria de numeros hasta a areas en el algebra y 
+geometria. Es por esto que desde los griegos, se busca una manera
+de encontrar primos de diferentes maneras.\\
+Con el tiempo los matematicos encontraron muchos metodos. El mas antiguo
+y mas sencillo de aplicar es el metodo de la criba de Eratostenes, que
+consiste en calcular la raiz cuadrada del numero del que se quiere
+si es primo o no. Si la raiz es un entero entonces el numero era un cuadrado
+y por tanto no era primo, de lo contrario se calcula el piso de la raiz y 
+miran los numeros primos menores a este numero, si alguno de estos numeros 
+divide al numero quiere decir que el numero no es primo.\\
+Pero hay algo que todos estos metodos pasan por alto,
+y es que el numero de numeros primos menores a un numero n es aproximadamente 
+$\frac{\sqrt{n}}{\log(\sqrt{n})}$, lo que hace que el metodo de la criba de 
+Eratostenes tenga una complejidad de $\it{O}(\frac{\sqrt{n}}{\log(\sqrt{n})})$ lo 
+que no es de complejidad polinomial.\\
+Lo que quiere decir esto es que, aunque el metodo de un resultado
+correcto, no es un metodo eficiente para encontrar numeros primos.
+Otro metodo que se usaba antes era el metodo usando el pequeño teorema 
+de Fermat, que dice que si p es un numero primo y a es un numero entero 
+que no es divisible por p, entonces $a^{p-1} \equiv 1 \mod p$. Este metodo
+se creia que servia para encontrar primos pues el algoritmo sera
+elegir un numero a y calcular $a^{n-1} \mod n$, si el resultado es diferente de 1, entonces n no es primo.
+y se prueba con los a menores a n. Sin embargo, este metodo no es correcto pero si polinomial a diferencia del anterior metodo, 
+pues existen numeros compuestos llamados pseudoprimos de Fermat o los numeros de Carmichael que cumplen con 
+esta propiedad para todos los valores de a con los que sean coprimos con n.\\
+Si bien existen muchos criterios para encontrar numeros primos, como el test de  Willson, la idea principal del algoritmo
+es que el criterio en el cual se basa el algoritmo tiene una cota lo suficientemente buena para
+lograr una complejidad polinomial menor a la que ya se tenia.
+
+\section{Primes is in P}
+
+Para iniciar la demostracion de este algoritmo, vamos a demostrar el criterio esencial el cual
+es muy similar al Pequeño teorema de Fermat, pero con una cota mucho mas estricta.\\
+\begin{teo}
+    Sea $a\in \Z, n\in \N, n\geq 2$ y $(a,n)=1$, entonces n es primo si y solo si $(x+a)^n \equiv x^n + a \mod n(x)$
+\end{teo}
+
+\begin{dem}
+    Para demostrar la implicacion directa suponga que n es primo entonces por teorema binomial se tiene que:
+\begin{align*}
+(x+a)^n &= \sum_{k=0}^n \binom{n}{k} x^{n-k} a^k \\
+&= x^n + a^n \mod n(x)
+\end{align*}
+pues cada termino de $\binom{n}{k}$ con $1\leq k \leq n-1$ es divisible por n pues siempre esta el coeficiente de n en el numerador.
+Esto deja que $(x+a)^n \equiv x^n + a^n \mod n(x)$ y por pequeño teorema de Fermat se tiene que $a^n \equiv a \mod n$ y por tanto $(x+a)^n \equiv x^n + a \mod n(x)$.\\
+Para la suficiencia suponga que n es compuesto, entonces existe un primo $q$ tal que $q|n$ y considere $k\in \N$ tal que $q^k||n$. Note ahora que $q^k \not| \binom{n}{q}$ pues 
+$\binom{n}{q}=\frac{n!}{q!(n-q!)}=\frac{(n-1)!m}{(q-1)!(n-q)!}$ dejando que $q^{k-1}|m \to q^k\not|\binom{n}{q}$. Como $(a,n)=1$ entonces $q^k\not|a \to q^k\not|a^r \forall r\in \N$, 
+dejando que como $(q^k,a^{n-q})=1$ entonces el coeficiente en la expancion binomial del termino $x^q$ no va a ser 0 modulo n y por tanto $(x+a)^n - x^n + a a \neq 0 \mod n(x)$ dando a lugar a una contradiccion
+
+\end{dem}
+
+\subsection{Notaciones}
+Defina el orden multiplicativo de n modulo r como el menor entero positivo k tal que $n^k \equiv 1 \mod r$ equivalente a el orden en $\Z_r^*$ y se denota por $O_r(n)$, 
+es importante aclarar que el orden solo tiene sentido si $(n,r)=1$.\\
+$\Z_n$ denota el anillo con elementos modulo n, y $\F_p$ denota el campo con p elementos, es decir $\Z_p$ con p primo.\\
+Si $h(x)$ es un polinomio de grado d entonces $\F[x]/(h(x))$ denota el cuerpo finito de orden $p^d$. Decimos que $f(x) \equiv g(x) \mod h(x), n$ para representar que $f(x)$ y $g(x)$ son equivalentes en el anillo $\Z_n[x]/(h(x))$.\\
+$\phi(n)$ denota la funcion de Euler totient, es decir el numero de enteros positivos menores a n que son coprimos con n.\\
+
+
+Ahora con este resultado podemos empezar a entrar mas a profundidad en el algoritmo. Si bien es un resultado muy importante en las matematicas
+su importancia no es proporcional con su dificultad a diferencia de muchas otras cosas dentro del area. Es un poco contraintuitivo que 
+un resultado asi se demorase tanto en ser descubierto puesto que el conocimiento de aqui en adelante para demostrar el algoritmo es un conocimiento
+de pregrado de matematicas y posiblemente menos para ser demostrado en su totalidad. A tal efecto que quienes lo demostraron fueron estudiantes.\\
+
+
+\subsection{El Algoritomo}
+
+\begin{center}
+\begin{tabular}{|p{0.85\textwidth}|}
+\hline
+\\
+\texttt{Entrada:}\quad entero $n > 1$.\\[6pt]
+\texttt{1.}\quad Si $(n = a^b$ Para $a \in \N$ y $b > 1)$, retorne \texttt{Compuesto}.\\[6pt]
+\texttt{2.}\quad Encuentre el $r$ mas pequeño tal que $\mathrm{o}_r(n) > \log^2 n$.\\[6pt]
+\texttt{3.}\quad Si $1 < (a, n) < n$ Para algun $a \leq r$, retorne \texttt{Compuesto}.\\[6pt]
+\texttt{4.}\quad Si $n \leq r$, retorne \texttt{Primo}.$^1$\\[6pt]
+\texttt{5.}\quad Desde $a = 1$ hasta $\lfloor\sqrt{\phi(r)}\log n\rfloor$ haga lo siguiente:\\[4pt]
+\qquad\qquad Si $\left((X + a)^n \neq X^n + a \pmod{X^r - 1,\, n}\right)$, retorne \texttt{Compuesto};\\[6pt]
+\texttt{6.}\quad retorne \texttt{Primo}.\\[6pt]
+\hline
+\end{tabular}
+\end{center}
+
+Ahora vamos a empezar a demostrar los resultados necesarios que nos llevaran al resultado final.\\
+
+\subsection{Demostracion del Algoritmo}
+\begin{lem}
+Sea $L(m) = \text{mcm}(1, 2, \dots, m)$. Para todo $m \ge 7$, se cumple que:
+\[ L(m) \ge 2^m \]
+\end{lem}
+
+\begin{dem}
+La demostración se basa en el estudio de la integral:
+$ I_n = \int_{0}^{1} x^n (1-x)^n dx $
+Es un resultado conocido que $L(2n+1) I_n$ es un entero positivo. Dado que $I_n = \frac{(n!)^2}{(2n+1)!}$, tenemos:
+\begin{equation}
+L(2n+1) \ge \frac{(2n+1)!}{(n!)^2} = (2n+1) \binom{2n}{n}
+\end{equation}
+Utilizando la desigualdad para el coeficiente binomial central $\binom{2n}{n} \ge \frac{4^n}{2n}$, para $n \ge 1$, se obtiene:
+\[
+L(2n+1) \ge (2n+1)\frac{4^n}{2n} = \left(1+\frac{1}{2n}\right)2^{2n}.
+\]
+Para $m = 2n+1$, esto implica $L(m) > 2^{m-1}$. Un refinamiento de este método mediante el uso de integrales de la forma $\int_{0}^{1} x^{n+k}(1-x)^n dx$ permite fortalecer la cota. 
+
+Específicamente, para $m \ge 7$, procedemos por inducción o verificación directa. 
+Para el caso base $m=7$:
+\[ L(7) = 420 > 2^7 = 128 \]
+Para el paso inductivo, se utiliza el hecho de que $L(m+1) = L(m) \cdot \frac{m+1}{\text{mcd}(L(m), m+1)}$. El crecimiento de la función $\psi(m) = \ln L(m)$ está acotado inferiormente por $m \ln 2$ para $m \ge 7$ según el análisis de las integrales de Chebyshev, lo que concluye que:
+\[ L(m) \ge 2^m \]
+\end{dem} 
+
+Ahora vamos a demostrar las dos implicaciones del teoremaque van a terminar dando el resultado final. La primera de estas es mucho mas facil que la reciproca y por ello se siguen los siguientes resultados.\\
+
+\begin{teo}
+    Si n es primo entonces el algoritmo retorna \texttt{Primo}.
+\end{teo}
+\begin{dem}
+    Como n es primo entonces no se cumple ni el paso 1 ni el 3 por definicion de ser primo. Ahora por el teorema 1 se tiene que n no puede cumplir el paso 5, pues si n es primo entonces se cumple que $(x+a)^n \equiv x^n + a \mod n(x)$ para todo a, y por tanto el algoritmo retorna \texttt{Primo} sin importar en que paso lo retorne.
+\end{dem}
+De ahora en adelante el logaritmo siempre se va a tomar en base 2 a menos que se indique lo contrario
+\begin{lem}
+    $\exists r \leq max\{3, \lceil \log^5 n \rceil\}$ tal que $O_r(n) > \log^2 n$.
+\end{lem}
+Este resultado nos es util pues para el paso 2 del algoritmo necesitamos encontrar este r y es importante que este r no sea tan grande para que el algoritmo siga siendo polinomial.\\
+\begin{dem}
+    Note que para $n=2,r=3$ se cumple la condicion trivialmente pues $max\{3,\lceil \log^5 n \rceil =1\} =3$ y $O_3(2)=2>1=\log^2(2)$. Suponga que $n>2$ entonces como $\log n \geq \log 3 \geq \sqrt[5]{10}$
+    Entonces  $\log^5 n \geq 10$ y $\lceil\log^5 n \rceil\ge 10$. Considere $r_1,r_2,\dots,r_t$ tales que $O_{r_i}(n)\leq \log^2 n$ o $r_i|n$, entonces todos los $r_i$ dividen al siguiente producto: \\
+    \begin{align}
+        n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)
+    \end{align}
+    puesto que si $r_i|n$ se tiene trivialmente, y si $O_{r_i}(n)\leq \log^2 n$ entonces el orden de $r_i$ debe estar en el intervalo de $[1,\log^2n]$ entonces, en particular, estan todos los ordenes de todos los $r_i$
+    que no dividen a n. Por otro lado, 
+    \begin{align}
+        P=n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)\le n^{\log^4n}\leq 2^{\log^5n}
+    \end{align}
+    Dado que $n^i \leq n^{\lfloor\log^2n\rfloor}$ y 
+    \begin{align}
+    n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)\le n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i)\le n^{2\lfloor\log^2n\rfloor} \le n^{2\log^2n} = n^{\log^4n}
+    \end{align}
+    ahora por el lema 1 se tiene que $L(\lceil\log^5 n\rceil) \geq 2^{\lceil\log^5 n\rceil} > 2^{\log^5 n} = n^{\log^4 n}$, lo que implica que $n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1) < L(\lceil\log^5 n\rceil)$,
+    lo que implica que debe existir un $s\leq \lceil\log^5 n\rceil$ tal que $s$ no es un $r_i$, es decir, $O_s(n) > \log^2 n$ y $s$ no divide a n. Ahora si $(s,n)=1$ queda demostrado el lema,
+    si $(s,n)>1$ entonces $s|n$ o $O_s(n) \leq \log^2 n$. Defina $r=\frac{s}{(s,n)}$
+    veamos que $r\notin\{r_1,r_2,\dots,r_t\}$, pues si $r=r_i$ entonces hay dos casos, $r|P$ o $O_{r_i}(n)\leq \log^2 n$. 
+    Si $O_{r_i}(n)\leq \log^2 n$ y $(r_i,n)=1$ entonces defina $d=(s,n)$, entonces $(r,d)=1$ pues tanto r como d dividen a P entonces como tienen 
+    minimo comun divisor 1 entonces $rd|P$ lo que es una contradiccion pues $s=r(s,n)|P$ lo que es una contradiccion pues $s$ no es un $r_i$.
+    Ahora si $r|n$ entonces veamos que $(r,d)=1$, suponga que no entonces existe un primo $q$ tal que $q|r$ y $q|d$, pero como $q|s,q|n$ entonces $qd|s$ y $qd|n$
+    dejando asi que $qd|d$ entonces $q=1$ contradiccion entonces como $(r,d)=1$ entonces por el argumento de antes queda que $s|n$ contradiccion.\\
+\end{dem}
+Con este lema podemos ir avanzando en los pasos del algoritmo, sabemos que el paso 1 ya no se cumple pues de lo contrario claramente 
+habria retornado compuesto. Supongamos que el paso 1 no dio como resultado compuesto, ahora por el anterior lema podemos ejecutar el 
+paso 2 sin problemas pues sabemos que existe un r. Ahora como sabemos que $O_r(n)>1$ entonces por Teorema de Lagrange debe existir un 
+divisor primo de n, p, tal que $O_r(p)>1$. Ahora $p>r$ pues si $p\leq r$ entonces el paso 3 del algoritmo hubiera retornado compuesto,
+por otro lado, si $n\leq p$ entonces esto deberia retornar primo pues tenemos un numero cuyo orden no es potencia de ninguno de los anteriores
+en un $\Z_r^*$ que es un grupo donde $n$ tiene orden $O_r(n)$ talque $O_r(p)|O_r(n)$ pero $O_r(p)$ es el orden del gurpo entonces n 
+tiene que ser primo obligatoriamente.\\
+Ahora tenemos que $p\ge r$ y por el paso 2 que $(n,r)=1$, de ahora en adelante tanto p como r van a estar fijos.
+Sea $\it{l}=\lfloor \sqrt{\phi(r)}\log n \rfloor$, el algoritmo ahora en el paso 5 va a verificar $\it l$ ecuaciones.
+Suponga que el algoritmo no retorna compuesto en el paso 5 entonces tenemos que 
+
+\begin{align}
+    (x+a)^n \equiv x^n + a \mod(x^r - 1, n), \forall a \in[0,\it{l}]
+\end{align}
+
+Pero como $p|n$ entonces tenemos que 
+
+\begin{align}
+    (x+a)^n \equiv x^n + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
+\end{align}
+
+Ahora por el teorema 1 se tiene que 
+
+\begin{align}
+    (x+a)^p \equiv x^p + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
+\end{align}
+
+Como en un cuerpo de caracterisitica p, elevar a la p es inyectivo, pues
+\begin{align}
+    f(x) = g(x) \to f(x) - g(x) = 0 \to (f(x) - g(x))^p = 0 \to f(x)^p - g(x)^p = 0  \to f(x)^p = g(x)^p \mod p
+\end{align}
+
+Entonces por las ecuaciones anteriores note que 
+
+\begin{align}
+    (x+a)^{(n/p)p} = (x+a)^n = x^n + a = x^{(n/p)p} + a = (x^{n/p}+a)^p\mod(x^r - 1, p), \forall a \in[0,\it{l}] 
+\end{align}
+Dejando que 
+\begin{align}
+    (x+a)^{(n/p)p} \equiv x^{(n/p)p} + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
+\end{align}
+Y como sabemos que elevar a la p es inyectivo queda el $(x+a)^{(n/p)} \equiv x^{(n/p)} + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]$\\
+Esta propiedad la vamos a llamar introspectividad y va a ser importante mas adelante.\\
+
+\begin{deff}
+    Para un polinomio $f(x)$ y un numero $m\in \N$, se dice que $f(x)$ es introspectivo para $m$ si
+    $f(x)^m \equiv f(x^m) \pmod{x^r - 1, p}$.
+\end{deff}
+
+\begin{lem}
+    Si $m,n$ son enteros introspectivos para $m$ entonces $mn$ es introspectivo para $f(x)$.
+\end{lem}
+
+\begin{dem}
+    Note que $f(x)^{mn} = (f(x)^m)^n \equiv f(x^m)^n  \mod(x^r - 1, p)$, remplazando $x^m=y$ tenemos que $f(y)^n \equiv f(y^n) \mod(x^r - 1, p)$, 
+    remplazando $y=x^m$ tenemos que $f(x^m)^n \equiv f((x^m)^n) \mod(x^r - 1, p)$, lo que implica que $f(x)^{mn} \equiv f(x^{mn}) \mod(x^r - 1, p)$ y 
+    por tanto $mn$ es introspectivo para $f(x)$.    
+\end{dem}
+
+\section{Implicaciones en la computación}
+
+\section{Conclusiones}
+
+\section{Referencias}
+
+
+\end{document}
