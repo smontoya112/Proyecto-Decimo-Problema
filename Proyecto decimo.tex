@@ -3,8 +3,8 @@
 \usepackage{graphicx} % Required for inserting images
 
 \title{Proyecto Decimo Problema}
-\author{Juan Camilo Solano, Nicolas Hernandez Derch, Samuel Montoya Salazar}
-\date{March 2026}
+\author{Juan Camilo Solano, Nicolás Hernández Derch, Samuel Montoya Salazar}
+\date{17 de Mayo, 2026}
 % Define English "lemma" environment to match usage \begin{lemma}...
 \newtheorem{lemma}{Lema}
 \newenvironment{dem}{\par\noindent\textbf{Dem.}\par}{\hfill$\square$\par}
@@ -81,6 +81,12 @@ es importante aclarar que el orden solo tiene sentido si $(n,r)=1$.\\
 $\Z_n$ denota el anillo con elementos modulo n, y $\F_p$ denota el campo con p elementos, es decir $\Z_p$ con p primo.\\
 Si $h(x)$ es un polinomio de grado d entonces $\F[x]/(h(x))$ denota el cuerpo finito de orden $p^d$. Decimos que $f(x) \equiv g(x) \mod h(x), n$ para representar que $f(x)$ y $g(x)$ son equivalentes en el anillo $\Z_n[x]/(h(x))$.\\
 $\phi(n)$ denota la funcion de Euler totient, es decir el numero de enteros positivos menores a n que son coprimos con n.\\
+
+Para explicar la complejidad temporal del algoritmo, usaremos el símbolo $\tilde{O}(t(n))$ para denotar $O(t(n)) \cdot \text{poly}(\log t(n))$,
+donde $t(n)$ es cualquier función de $n$.  Por ejemplo,
+$\tilde{O}(\log^k n) = O(\log^k n \cdot \text{poly}(\log \log n)) = O(\log^{k+\varepsilon} n)$
+para cualquier $\varepsilon > 0$. Usaremos $\log$ para logaritmo en base 2,
+y $\ln$ para el logaritmo natural. \\
 
 
 Ahora con este resultado podemos empezar a entrar mas a profundidad en el algoritmo. Si bien es un resultado muy importante en las matematicas
@@ -348,8 +354,82 @@ Por el lema anterior, $n=p^\alpha$ para algún $\alpha\in\mathbb{N}^+$.
 Si $\alpha>1$, el algoritmo lo hubiera detectado en el paso 1. 
 Por lo tanto, debe ocurrir que $n=p$.
 \end{dem}
-\section{Implicaciones en la computación}
+\section{Complejidad temporal del algoritmo}
+Para calcular la complejidad temporal del algoritmo, tendremos en cuenta que
+las operaciones aritméticas básicas (suma, multiplicación y división) entre dos números
+de $m$ bits requieren tiempo $\tilde{O}(m)$. Esto se debe a que existen algoritmos
+eficientes de multiplicación, como el de Karatsuba, que
+realizan estas operaciones en tiempo casi lineal respecto al número de bits. De manera
+análoga, si trabajamos con polinomios de grado $d$ cuyos coeficientes tienen a lo sumo
+$m$ bits, las mismas operaciones toman tiempo $\tilde{O}(d \cdot m)$, pues ahora debemos
+operar sobre $d$ coeficientes, cada uno de $m$ bits, lo que multiplica el costo
+por un factor de $d$. \\
 
+\begin{teo}
+La complejidad temporal del algoritmo es $\tilde{O}(\log^{21/2} n)$.
+\end{teo}
+
+\begin{dem}
+Para hallar la complejidad temporal del algoritmo, analizaremos cada paso por separado. \\
+Para el paso 1, debemos verificar si $n = a^b$ para algunos naturales $a, b$ con $b \geq 2$.
+Primero, notemos que $b$ no puede ser arbitrariamente grande: como $a \geq 2$, se tiene
+$2^b \leq a^b = n$, de donde $b \leq \log n$. Así, basta probar todos los valores de $b$
+entre $2$ y $\lfloor \log n \rfloor$, lo cual toma tiempo $O(\log n)$.
+
+Fijado un valor de $b$, queremos determinar si existe un entero $a$ tal que $a = n^{1/b}$.
+Esto se realiza mediante búsqueda binaria en el intervalo $[2, \sqrt{n}]$. Dado que $n$
+tiene $O(\log n)$ bits, la búsqueda binaria realiza $O(\log n)$ iteraciones. En cada
+iteración se debe calcular $a^b$ y compararlo con $n$. Usando multiplicaciones sucesivas,
+calcular $a^b$ requiere $O(\log b) = O(\log \log n)$ multiplicaciones de números de a lo
+sumo $\log n$ bits, y como cada multiplicación toma tiempo $\tilde{O}(\log n)$, el cálculo
+de $a^b$ toma tiempo $\tilde{O}(\log n)$. Por lo tanto, cada iteración de la búsqueda
+binaria cuesta $\tilde{O}(\log n)$, y como hay $O(\log n)$ iteraciones, el costo total
+por cada valor de $b$ es $\tilde{O}(\log^2 n)$.
+
+Combinando ambos factores, el costo total del paso 1 es $O(\log n) \cdot \tilde{O}(\log^2 n)
+= \tilde{O}(\log^3 n)$.
+
+En el paso 2, buscamos un $r$ tal que $o_r(n) > \log^2 n$. Esto se hace probando
+valores sucesivos de $r$ y verificando que $n^k \not\equiv 1 \pmod{r}$ para todo
+$k \leq \log^2 n$. Para un $r$ particular, esto requiere a lo sumo $O(\log^2 n)$
+multiplicaciones módulo $r$, por lo que toma tiempo $\tilde{O}(\log^2 n \cdot \log r)$.
+Por el Lema 4.3, sabemos que solo es necesario probar $O(\log^5 n)$ valores distintos
+de $r$. Por lo tanto, la complejidad total del paso 2 es $\tilde{O}(\log^7 n)$.
+
+El paso 3 consiste en calcular el $\text{mcd}$ de $a$ y $n$, donde $a$ es algun natural menor o igual que $r$.
+Esto corresponde a calcular $r$ veces un $\text{mcd}$. Cada cálculo de
+$\text{mcd}$ toma tiempo $O(\log n)$ usando el Algoritmo de Euclides, y por lo tanto la complejidad temporal de este
+paso es $O(r \log n) = O(\log^6 n)$. \\
+La complejidad temporal del paso 4 es simplemente
+$O(\log n)$, pues solo se compara $n$ con $r$.
+
+En el paso 5, debemos verificar $\lfloor \sqrt{\phi(r)} \log n \rfloor$ ecuaciones, pues ese es el número de valores de $a$ que se prueban.
+Cada ecuación es de la
+forma $(X + a)^n \equiv X^n + a \pmod{X^r - 1, n}$. Analicemos el costo de verificar
+cada una de estas ecuaciones.
+
+Cada verificación consiste en calcular el lado izquierdo $(X+a)^n$ en el anillo
+$\mathbb{Z}_n[X]/(X^r-1)$. Esto se hace mediante exponenciación rápida, que requiere
+$O(\log n)$ multiplicaciones de polinomios. Cada polinomio en este anillo tiene grado
+a lo sumo $r-1$ y coeficientes de tamaño $O(\log n)$ bits. Por lo discutido anteriormente,
+multiplicar dos polinomios de grado $d$ con coeficientes de $m$ bits toma tiempo
+$\tilde{O}(d \cdot m)$. En nuestro caso, $d = r$ y $m = \log n$, por lo que cada
+multiplicación de polinomios cuesta $\tilde{O}(r \log n)$. Realizando $O(\log n)$ de
+estas multiplicaciones, el costo de verificar cada ecuación es
+$\tilde{O}(r \log n) \cdot O(\log n) = \tilde{O}(r \log^2 n)$.
+
+Finalmente, dado que hay $\lfloor \sqrt{\phi(r)} \log n \rfloor$ ecuaciones que verificar,
+el costo total del paso 5 es:
+\begin{align*}
+\tilde{O}(r \log^2 n) \cdot O\!\left(\sqrt{\phi(r)} \log n\right)
+&= \tilde{O}\!\left(r \sqrt{\phi(r)} \log^3 n\right).
+\end{align*}
+Como $\phi(r) \leq r$ y, por el Lema 4.3, $r = O(\log^5 n)$, tenemos
+$r\sqrt{\phi(r)} \leq r^{3/2} = O(\log^{15/2} n)$, y por tanto el costo total es
+$\tilde{O}(\log^{15/2} n \cdot \log^3 n) = \tilde{O}(\log^{21/2} n)$.
+El tiempo de este paso domina a todos los demás. Por tanto, concluimos que la complejidad temporal del
+algoritmo es $\tilde{O}(\log^{21/2} n)$.
+\end{dem}
 \section{Conclusiones}
 
 \section{Referencias}
