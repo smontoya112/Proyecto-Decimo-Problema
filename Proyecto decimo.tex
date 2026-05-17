@@ -89,7 +89,7 @@ un resultado asi se demorase tanto en ser descubierto puesto que el conocimiento
 de pregrado de matematicas y posiblemente menos para ser demostrado en su totalidad. A tal efecto que quienes lo demostraron fueron estudiantes.\\
 
 
-\subsection{El Algoritomo}
+\subsection{El Algoritmo}
 
 \begin{center}
 \begin{tabular}{|p{0.85\textwidth}|}
@@ -221,8 +221,10 @@ Esta propiedad la vamos a llamar introspectividad y va a ser importante mas adel
     $f(x)^m \equiv f(x^m) \pmod{x^r - 1, p}$.
 \end{deff}
 
+Ahora mostramos dos propiedades de números introspectivos que nos servirán más adelante:
+
 \begin{lem}
-    Si $m,n$ son enteros introspectivos para $m$ entonces $mn$ es introspectivo para $f(x)$.
+    Si $m,n$ son enteros introspectivos para $f(x)$ entonces $mn$ es introspectivo para $f(x)$.
 \end{lem}
 
 \begin{dem}
@@ -231,6 +233,121 @@ Esta propiedad la vamos a llamar introspectividad y va a ser importante mas adel
     por tanto $mn$ es introspectivo para $f(x)$.    
 \end{dem}
 
+\begin{lem}
+    Si $m$ es introspectivo para $f(x)$ y para $g(x)$ entonces lo es para $f(x)g(x)$.
+\end{lem}
+
+\begin{dem}
+    Tenemos que
+    \begin{align}
+        [f(x)g(x)]^m = [f(x)^m][g(x)^m] \equiv f(x^m)g(x^m) \mod(x^r - 1, p)
+    \end{align}
+\end{dem}
+
+Con lo anterior podemos hacer las siguientes observaciones:
+\begin{itemize}
+    \item Por Lema, tenemos que $\frac{n}{p} \cdot \frac{n}{p}$ y $p \cdot p$ son ambos introspectivos para $x+a$ para $0\leq a\leq l$. Así, $I=\{(n/p)^i\cdot p^j | i,j \in \N\}$ es un conjunto de enteros introspectivos para $x+a$ para $0\leq a\leq l$.
+    \item Para todo $m \in I$ tenemos que $m$ es introspectivo para $(x+a)^{e_a}$ con $e_a\geq 0$, por lo que todo $m \in I$ es introspectivo para todo polinomimo en $P=\left\{\prod_{a=0}^{\ell}(X+a)^{e_a}\ \middle|\ e_a\geq 0\right\}$.
+\end{itemize}
+
+Procedemos a definir dos grupos cuyas cardinalidades nos ayudarán a mostrar la vvalidez del algoritmo:
+\begin{itemize}
+    \item $G=\{m \mod r \mid m \in I\}$ subgrupo de $\Z_r^*$, pues $gcd(n,r)=gcd(p,r)=1$. Tome $t:=|G|$. Note que $G=<\overline{n},\overline{p}>$. Como $o_r(n)>log^2 n$ y $o_r(n)\mid t$ (por Lagrange) entonces $t>log^2 n$   
+    \item Sea $Q_r(x)$ el $r$-ésimo polinomio ciclotómico sobre $\F_p$. Por definición, $Q_r(x)\mid x^r-1$ y por propiedades de polinomios ciclotómicos, $Q_r(x)$ se puede factorizar en factores irreducibles de grado $o_r(p)>1$. Sea $h(x)$ uno de esos factores. Entonces $\deg(h(x))=o_r(p)\geq 2$. Definimos 
+    \begin{align}
+        \mathcal{G}=\{\overline{p(x)}\in F \mid p(x)\in P\} \leq F := \F_p[x]/(h(x))
+    \end{align}
+    generado por $\overline{x}, \overline{x+1}, \dots, \overline{x+l}\in F$
+\end{itemize}
+
+Teniendo estos grupos, podemos encontrar una cota inferior al tamaño de $\mathcal{G}$ utilizando $t$:
+\begin{lem}
+$|\mathcal{G}|\geq \binom{t+l}{t-1}$
+\end{lem}
+\begin{dem}
+    Como $h(x)$ es un factor de $Q_r(x)$ que es ciclotómico, entonces $x$ es raíz r-ésima primitiva de la unidad en $F$ ya que 
+    \begin{align}
+        Q_r(x)\mid x^r-1 \to h(x)\mid x^r-1 \to \overline{x^r-1}=\overline{0} \text{ en } F
+    \end{align}
+    Sean $f(x),g(x)$ polinomios tal que $deg(f(x)),deg(g(x))<t$. Queremos ver que si $f(x)\neq g(x)$ entonces $\overline{f(x)}\neq \overline{g(x)}$. Suponga que $\overline{f(x)}=\overline{g(x)}$ en $F$.Para $m \in I$ tenemos que $\overline{[f(x)]^m}=\overline{[g(x)]^m}$ en $F$. Como $h(x)\mid x^r-1$, entonces $\overline{f(x^m)}=\overline{g(x^m)}$.
+    Como tomamos $m$ arbitrario tenemos que $\forall m \in I: \overline{x^m}$ es raíz de $\overline{Q(y)}:=\overline{f(y)-g(y)}$. Como $gcd(m,r)=1$, entonces $\overline{x^m}$ es r-ésima raíz primitiva de la unidad. Así, hay $|G|=t$ raíces distintas de $\overline{Q(y)}$ en $F$; pero $deg(Q(y))<t$ lo que es una contradicción. Debe ocurrir que $\overline{f(x)}=\overline{g(x)}$ en $F$.
+    Ahora, como $l=\lfloor \sqrt{\phi(r)}\log n\rfloor<\lfloor\sqrt{r}\log n\rfloor \leq \sqrt{r}\log n<r$ (la útlima desigualdad ya que $o_r(n)\leq \phi(r)$) y $\phi(r)<r$, entonces $\log^2n<o_r(n)\leq \phi(r)<r$ por lo que $l<rr$ y $p>r$. Tenemos que si $1\leq i \neq j \leq l$ se tiene que $\overline{i} \neq \overline{j}$ en $\F_p$.
+    Obtenemos que $\overline{x}, \overline{x+1}, \dots, \overline{x+l}$ son distintos en $F$. Como $deg(h(x))\geq 2, entonces \overline{x+a} \neq \overline{0}$ para $0\leq a \leq l$. Concluimos que existen $l+1$ polnomios distintos de grado $1$ en $\mathcal{G}$ y así existen al menos $\binom{t+(l+1)-1}{t-1}=\binom{t+l}{t-1}$ polinomios distintos de grado $<t$ en $\mathcal{G}$.
+\end{dem}
+Seguimos con un un último lema que nos ayudará con la caracterización de $n$:
+\begin{lem}
+Si $n$ no es potencia de $p$, entonces $|\mathcal{G}|\leq n^{\sqrt{t}}$
+\end{lem}
+\begin{dem}
+    Sea $\hat{I}=\{\left(\frac{n}{p}\right)^i p^j \mid 0 \leq i,j \leq \left\lfloor \sqrt{t} \right\rfloor \} \subseteq I$. Note que $\forall i,j : (\frac{n}{p})^ip^j$ es único por lo que $|\hat{I}|=(\lfloor \sqrt{t} \rfloor + 1)^2>t$. Deben existir $m_1,m_2 \in \hat{I} tal que m_1 \equiv m_2 \mod r$. Sin pérdida de la generalidad, suponga que $m_1>m_2$. Tenemos que $x^{m_1} \equiv x^{m_2} \mod x^r-1$
+    Sea $f(x) \in P$. Entonces 
+    \begin{align}
+    [f(x)]^{m_1} \equiv f(x^{m_1}) \equiv f(x^{m_2}) \equiv [f(x)]^{m_2} \mod x^r-1 \to \overline{[f(x)]^{m_1}}=\overline{[f(x)]^{m_2}} \text{ en } F
+    \end{align}
+    Así, $\overline{f(x)} \in \mathcal{G}$ es raíz de $\overline{Q'(y)}:=\overline{y^{m_1}-y^{m_2}}$ en $F$. Como tomamos $f(x)$ arbitrario, entonces $\overline{Q'(y)}$ tiene al menos $|\mathcal{G}|$ raíces distintas en $F$. Además, $deg(Q'(y))=m_1$ por construcción, y tenemos que  $\exists i,j : m_1=(\frac{n}{p})^ip^j\leq (\frac{n}{p})^{\lfloor \sqrt{t} \rfloor}p^{\lfloor \sqrt{t} \rfloor}=n^{\lfloor \sqrt{t} \rfloor}\leq n^{\sqrt{t}}$. Como $|\mathcal{G}|\leq m_1$, entonces $|\mathcal{G}|\leq n^{\sqrt{t}}$. 
+\end{dem}
+Con todos los reultados anteriores, podemos demostrar la implicacion reciproca del teorema 1 y mostrar la validez del algoritmo.\\
+\begin{teo}
+    Si el algoritmo retorna \texttt{Primo} entonces n es primo.
+\end{teo}
+\begin{dem}
+Suponga que el algoritmo retorna \texttt{Primo}. Por el lema anterior, para $|G|=t$ y 
+\[
+l=\left\lfloor \sqrt{\phi(r)}\log n \right\rfloor,
+\]
+se tiene que
+\begin{align}
+|\mathcal{G}| 
+&\geq \binom{t+l}{t-1} \\
+&\geq \binom{l+1+\left\lfloor \sqrt{t}\log n \right\rfloor}
+{\left\lfloor \sqrt{t}\log n \right\rfloor},
+\label{eq:1}
+\end{align}
+ya que
+\[
+t\geq o_r(n)>\log^2 n
+\to \sqrt{t}>\log n
+\to t>\sqrt{t}\log n
+\to t>\left\lfloor \sqrt{t}\log n \right\rfloor.
+\]
+
+Además,
+\begin{align}
+\binom{l+1+\left\lfloor \sqrt{t}\log n \right\rfloor}
+{\left\lfloor \sqrt{t}\log n \right\rfloor}
+&\geq
+\binom{2\left\lfloor \sqrt{t}\log n \right\rfloor+1}
+{\left\lfloor \sqrt{t}\log n \right\rfloor},
+\label{eq:2}
+\end{align}
+ya que, como $G\leq \mathbb{Z}_r^*$, se tiene que
+\[
+t\mid \phi(r)
+\to t\leq \phi(r)
+\to
+l=
+\left\lfloor \sqrt{\phi(r)}\log n \right\rfloor
+\geq
+\left\lfloor \sqrt{t}\log n \right\rfloor.
+\]
+
+Finalmente,
+\begin{align}
+\binom{2\left\lfloor \sqrt{t}\log n \right\rfloor+1}
+{\left\lfloor \sqrt{t}\log n \right\rfloor}
+&\geq
+2^{\left\lfloor \sqrt{t}\log n \right\rfloor+1}
+\\
+&\geq
+2^{\sqrt{t}\log n}
+=
+n^{\sqrt{t}}.
+\end{align}
+
+Por el lema anterior, $n=p^\alpha$ para algún $\alpha\in\mathbb{N}^+$. 
+Si $\alpha>1$, el algoritmo lo hubiera detectado en el paso 1. 
+Por lo tanto, debe ocurrir que $n=p$.
+\end{dem}
 \section{Implicaciones en la computación}
 
 \section{Conclusiones}
