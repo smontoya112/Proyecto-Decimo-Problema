@@ -53,7 +53,7 @@ Si bien existen muchos criterios para encontrar numeros primos, como el test de 
 es que el criterio en el cual se basa el algoritmo tiene una cota lo suficientemente buena para
 lograr una complejidad polinomial menor a la que ya se tenia.
 
-\section{Primes is in P}
+\section{Algoritmo AKS}
 
 Para iniciar la demostracion de este algoritmo, vamos a demostrar el criterio esencial el cual
 es muy similar al Pequeño teorema de Fermat, pero con una cota mucho mas estricta.\\
@@ -354,7 +354,7 @@ Por el lema anterior, $n=p^\alpha$ para algún $\alpha\in\mathbb{N}^+$.
 Si $\alpha>1$, el algoritmo lo hubiera detectado en el paso 1. 
 Por lo tanto, debe ocurrir que $n=p$.
 \end{dem}
-\section{Complejidad temporal del algoritmo}
+\subsection{Complejidad temporal del algoritmo}
 Para calcular la complejidad temporal del algoritmo, tendremos en cuenta que
 las operaciones aritméticas básicas (suma, multiplicación y división) entre dos números
 de $m$ bits requieren tiempo $\tilde{O}(m)$ \cite{vzGG99}. Esto se debe a que existen algoritmos
