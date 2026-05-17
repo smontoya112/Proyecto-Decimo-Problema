@@ -430,7 +430,76 @@ $\tilde{O}(\log^{15/2} n \cdot \log^3 n) = \tilde{O}(\log^{21/2} n)$.
 El tiempo de este paso domina a todos los demás. Por tanto, concluimos que la complejidad temporal del
 algoritmo es $\tilde{O}(\log^{21/2} n)$.
 \end{dem}
-\section{Conclusiones}
+\section{Aplicaciones computacionales}
+
+Este algoritmo, conocido como el algoritmo AKS debido a las iniciales de los nombres de los creadores, representa un hito fundamental en la teoría de la complejidad
+computacional y la teoría de números. En esta sección exponemos sus principales
+aplicaciones e implicaciones, así como sus limitaciones en contextos prácticos.
+
+\subsection{Criptografía}
+
+Uno de los campos donde la verificación de primalidad tiene mayor relevancia práctica
+es la criptografía, en particular el criptosistema RSA. En este
+esquema, la seguridad del sistema depende de la dificultad de factorizar el producto
+$n = p \cdot q$ de dos números primos grandes $p$ y $q$. Para generar las claves,
+es necesario producir primos del orden de cientos o miles de dígitos decimales, lo
+cual exige un método confiable y eficiente para verificar la primalidad de un
+candidato.
+
+Antes de que saliera el algoritmo AKS, los algoritmos utilizados en la práctica para este fin eran
+probabilísticos, como el test de Miller-Rabin. Estos algoritmos son muy eficientes,
+pero tienen una pequeña probabilidad de error: pueden clasificar erróneamente un
+número compuesto como primo. Si en RSA se
+generara un número compuesto en lugar de un primo, la clave privada se generaría
+incorrectamente, haciendo que el descifrado sea prácticamente imposible, o peor aún,
+si la clave pública resultara fácilmente factorizable, la seguridad del sistema
+quedaría comprometida. El algoritmo AKS, al ser determinista, elimina por completo
+esta posibilidad de error.
+
+\subsection{Limitaciones prácticas}
+
+A pesar de su importancia teórica, el algoritmo AKS presenta serias limitaciones
+cuando se intenta aplicar en contextos reales. La complejidad temporal del algoritmo
+original es $\tilde{O}(\log^{21/2} n)$, y aunque versiones mejoradas la reducen a
+$\tilde{O}(\log^6 n)$, esto sigue siendo considerablemente más lento que los
+algoritmos probabilísticos usados en la práctica, como Miller-Rabin, cuya complejidad
+es $O(k \log^3 n)$, donde $k$ es el número de iteraciones.
+
+Además, el costo en memoria del algoritmo es demasiado alto para entradas de tamaño
+criptográfico. Dado que el algoritmo opera en el anillo $\mathbb{Z}_n[X]/(X^r - 1)$
+con $r = O(\log^5 n)$, los polinomios involucrados tienen grado hasta $r - 1$, con
+coeficientes que pueden tener hasta $O(\log n)$ bits. Para un número $n$ de 1024
+bits, esto se traduce en requerimientos de almacenamiento del orden de $10^9$ GB,
+lo cual es completamente inviable en la práctica.
+
+Por estas razones, en aplicaciones criptográficas reales se prefieren los tests
+probabilísticos como Miller-Rabin, que ofrecen un equilibrio mucho
+más favorable entre velocidad y confiabilidad. La probabilidad de error del test
+de Miller-Rabin, por ejemplo, es a lo sumo $4^{-k}$ tras $k$ iteraciones, lo que
+en la práctica se vuelve astronómicamente pequeña con un número moderado de rondas.
+
+\subsection{Importancia teórica: PRIMES $\in$ P}
+
+Más allá de sus aplicaciones directas, el verdadero impacto del algoritmo AKS se refleja
+en la teoría de la complejidad computacional. Antes de 2002, que fue cuando se publicó el algoritmo AKS,
+era un problema abierto determinar si la verificación de primalidad podía resolverse
+en tiempo polinomial de manera determinista e incondicional. Los algoritmos
+deterministas existentes, como el test de Miller bajo la hipótesis de Riemann
+generalizada, requerían asumir conjeturas no demostradas para garantizar su
+corrección. Los algoritmos probabilísticos, por su parte, no ofrecían certeza
+absoluta.
+
+El algoritmo AKS resolvió este problema de forma definitiva al demostrar que
+$\textsc{PRIMES} \in \textsf{P}$, es decir, que el problema de decisión de determinar
+si un número dado es primo pertenece a la clase de complejidad $\textsf{P}$: la clase
+de problemas que se pueden solucionar en tiempo polinomial de manera determinista. Este resultado
+es incondicional, funciona para cualquier entero y no depende de ninguna
+hipótesis no demostrada.
+
+Este logro, además de cerrar un problema abierto, abrió nuevas
+líneas de investigación en teoría de números computacional e impulsó el desarrollo
+de algoritmos más eficientes para problemas relacionados, consolidando la primalidad
+como uno de los problemas mejor comprendidos dentro de $\textsf{P}$.
 
 \section{Referencias}
 
