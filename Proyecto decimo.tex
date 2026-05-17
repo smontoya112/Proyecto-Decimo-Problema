@@ -357,11 +357,11 @@ Por lo tanto, debe ocurrir que $n=p$.
 \section{Complejidad temporal del algoritmo}
 Para calcular la complejidad temporal del algoritmo, tendremos en cuenta que
 las operaciones aritméticas básicas (suma, multiplicación y división) entre dos números
-de $m$ bits requieren tiempo $\tilde{O}(m)$. Esto se debe a que existen algoritmos
+de $m$ bits requieren tiempo $\tilde{O}(m)$ \cite{vzGG99}. Esto se debe a que existen algoritmos
 eficientes de multiplicación, como el de Karatsuba, que
 realizan estas operaciones en tiempo casi lineal respecto al número de bits. De manera
 análoga, si trabajamos con polinomios de grado $d$ cuyos coeficientes tienen a lo sumo
-$m$ bits, las mismas operaciones toman tiempo $\tilde{O}(d \cdot m)$, pues ahora debemos
+$m$ bits, las mismas operaciones toman tiempo $\tilde{O}(d \cdot m)$ \cite{vzGG99}, pues ahora debemos
 operar sobre $d$ coeficientes, cada uno de $m$ bits, lo que multiplica el costo
 por un factor de $d$. \\
 
@@ -387,7 +387,7 @@ binaria cuesta $\tilde{O}(\log n)$, y como hay $O(\log n)$ iteraciones, el costo
 por cada valor de $b$ es $\tilde{O}(\log^2 n)$.
 
 Combinando ambos factores, el costo total del paso 1 es $O(\log n) \cdot \tilde{O}(\log^2 n)
-= \tilde{O}(\log^3 n)$.
+= \tilde{O}(\log^3 n)$ \cite{vzGG99}.
 
 En el paso 2, buscamos un $r$ tal que $o_r(n) > \log^2 n$. Esto se hace probando
 valores sucesivos de $r$ y verificando que $n^k \not\equiv 1 \pmod{r}$ para todo
@@ -398,7 +398,7 @@ de $r$. Por lo tanto, la complejidad total del paso 2 es $\tilde{O}(\log^7 n)$.
 
 El paso 3 consiste en calcular el $\text{mcd}$ de $a$ y $n$, donde $a$ es algun natural menor o igual que $r$.
 Esto corresponde a calcular $r$ veces un $\text{mcd}$. Cada cálculo de
-$\text{mcd}$ toma tiempo $O(\log n)$ usando el Algoritmo de Euclides, y por lo tanto la complejidad temporal de este
+$\text{mcd}$ toma tiempo $O(\log n)$ \cite{vzGG99} usando el Algoritmo de Euclides, y por lo tanto la complejidad temporal de este
 paso es $O(r \log n) = O(\log^6 n)$. \\
 La complejidad temporal del paso 4 es simplemente
 $O(\log n)$, pues solo se compara $n$ con $r$.
@@ -444,10 +444,10 @@ esquema, la seguridad del sistema depende de la dificultad de factorizar el prod
 $n = p \cdot q$ de dos números primos grandes $p$ y $q$. Para generar las claves,
 es necesario producir primos del orden de cientos o miles de dígitos decimales, lo
 cual exige un método confiable y eficiente para verificar la primalidad de un
-candidato.
+candidato \cite{AKS04}.
 
 Antes de que saliera el algoritmo AKS, los algoritmos utilizados en la práctica para este fin eran
-probabilísticos, como el test de Miller-Rabin. Estos algoritmos son muy eficientes,
+probabilísticos, como el test de Miller-Rabin \cite{Rabin80}. Estos algoritmos son muy eficientes,
 pero tienen una pequeña probabilidad de error: pueden clasificar erróneamente un
 número compuesto como primo. Si en RSA se
 generara un número compuesto en lugar de un primo, la clave privada se generaría
@@ -460,9 +460,9 @@ esta posibilidad de error.
 
 A pesar de su importancia teórica, el algoritmo AKS presenta serias limitaciones
 cuando se intenta aplicar en contextos reales. La complejidad temporal del algoritmo
-original es $\tilde{O}(\log^{21/2} n)$, y aunque versiones mejoradas la reducen a
+original es $\tilde{O}(\log^{21/2} n)$ \cite{AKS04}, y aunque versiones mejoradas la reducen a
 $\tilde{O}(\log^6 n)$, esto sigue siendo considerablemente más lento que los
-algoritmos probabilísticos usados en la práctica, como Miller-Rabin, cuya complejidad
+algoritmos probabilísticos usados en la práctica, como Miller-Rabin \cite{Rabin80}, cuya complejidad
 es $O(k \log^3 n)$, donde $k$ es el número de iteraciones.
 
 Además, el costo en memoria del algoritmo es demasiado alto para entradas de tamaño
@@ -470,11 +470,11 @@ criptográfico. Dado que el algoritmo opera en el anillo $\mathbb{Z}_n[X]/(X^r -
 con $r = O(\log^5 n)$, los polinomios involucrados tienen grado hasta $r - 1$, con
 coeficientes que pueden tener hasta $O(\log n)$ bits. Para un número $n$ de 1024
 bits, esto se traduce en requerimientos de almacenamiento del orden de $10^9$ GB,
-lo cual es completamente inviable en la práctica.
+lo cual es completamente inviable en la práctica \cite{Cao14}.
 
 Por estas razones, en aplicaciones criptográficas reales se prefieren los tests
 probabilísticos como Miller-Rabin, que ofrecen un equilibrio mucho
-más favorable entre velocidad y confiabilidad. La probabilidad de error del test
+más favorable entre velocidad y confiabilidad \cite{Rabin80}. La probabilidad de error del test
 de Miller-Rabin, por ejemplo, es a lo sumo $4^{-k}$ tras $k$ iteraciones, lo que
 en la práctica se vuelve astronómicamente pequeña con un número moderado de rondas.
 
@@ -485,7 +485,7 @@ en la teoría de la complejidad computacional. Antes de 2002, que fue cuando se 
 era un problema abierto determinar si la verificación de primalidad podía resolverse
 en tiempo polinomial de manera determinista e incondicional. Los algoritmos
 deterministas existentes, como el test de Miller bajo la hipótesis de Riemann
-generalizada, requerían asumir conjeturas no demostradas para garantizar su
+generalizada \cite{Miller76}, requerían asumir conjeturas no demostradas para garantizar su
 corrección. Los algoritmos probabilísticos, por su parte, no ofrecían certeza
 absoluta.
 
@@ -501,7 +501,40 @@ líneas de investigación en teoría de números computacional e impulsó el des
 de algoritmos más eficientes para problemas relacionados, consolidando la primalidad
 como uno de los problemas mejor comprendidos dentro de $\textsf{P}$.
 
-\section{Referencias}
 
+\begin{thebibliography}{99}
+
+\bibitem{AKS04}
+M.~Agrawal, N.~Kayal y N.~Saxena,
+\textit{PRIMES is in P},
+\textit{Annals of Mathematics}, vol.~160, núm.~2, pp.~781--793, 2004.
+\newblock DOI: \texttt{10.4007/annals.2004.160.781}
+
+\bibitem{vzGG99}
+J.~von zur~Gathen y J.~Gerhard,
+\textit{Modern Computer Algebra},
+Cambridge University Press, 1999.
+
+\bibitem{Rabin80}
+M.~O.~Rabin,
+\textit{Probabilistic algorithm for testing primality},
+\textit{Journal of Number Theory}, vol.~12, núm.~1, pp.~128--138, 1980.
+\newblock DOI: \texttt{10.1016/0022-314X(80)90084-0}
+
+\bibitem{Miller76}
+G.~L.~Miller,
+\textit{Riemann's hypothesis and tests for primality},
+\textit{Journal of Computer and System Sciences}, vol.~13, núm.~3, pp.~300--317, 1976.
+\newblock DOI: \texttt{10.1016/S0022-0000(76)80043-8}
+
+
+\bibitem{Cao14}
+Z.~Cao,
+\textit{Remarks on AKS Primality Testing Algorithm and a Flaw in the
+Definition of P},
+\textit{arXiv preprint}, arXiv:1402.0146, 2014.
+\newblock Disponible en: \texttt{https://arxiv.org/abs/1402.0146}
+
+\end{thebibliography}
 
 \end{document}
