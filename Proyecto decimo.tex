@@ -21,38 +21,37 @@
 \end{abstract}
 
 \section{Historia de cómo encontrar números primos}
-A lo largo de la historia, los matematicos han desarrollado un
-interes intrinseco por encontrar numeros primos. Sus propiedades
-abarcan todas las areas de las matematicas, llegando desde su
-origen la teoria de numeros hasta a areas en el algebra y 
-geometria. Es por esto que desde los griegos, se busca una manera
-de encontrar primos de diferentes maneras.\\
-Con el tiempo los matematicos encontraron muchos metodos. El mas antiguo
-y mas sencillo de aplicar es el metodo de la criba de Eratostenes, que
-consiste en calcular la raiz cuadrada del numero del que se quiere
-si es primo o no. Si la raiz es un entero entonces el numero era un cuadrado
-y por tanto no era primo, de lo contrario se calcula el piso de la raiz y 
-miran los numeros primos menores a este numero, si alguno de estos numeros 
-divide al numero quiere decir que el numero no es primo.\\
-Pero hay algo que todos estos metodos pasan por alto,
-y es que el numero de numeros primos menores a un numero n es aproximadamente 
-$\frac{\sqrt{n}}{\log(\sqrt{n})}$, lo que hace que el metodo de la criba de 
-Eratostenes tenga una complejidad de $\it{O}(\frac{\sqrt{n}}{\log(\sqrt{n})})$ lo 
-que no es de complejidad polinomial.\\
-Lo que quiere decir esto es que, aunque el metodo de un resultado
-correcto, no es un metodo eficiente para encontrar numeros primos.
-Otro metodo que se usaba antes era el metodo usando el pequeño teorema 
-de Fermat, que dice que si p es un numero primo y a es un numero entero 
-que no es divisible por p, entonces $a^{p-1} \equiv 1 \mod p$. Este metodo
-se creia que servia para encontrar primos pues el algoritmo sera
-elegir un numero a y calcular $a^{n-1} \mod n$, si el resultado es diferente de 1, entonces n no es primo.
-y se prueba con los a menores a n. Sin embargo, este metodo no es correcto pero si polinomial a diferencia del anterior metodo, 
-pues existen numeros compuestos llamados pseudoprimos de Fermat o los numeros de Carmichael que cumplen con 
-esta propiedad para todos los valores de a con los que sean coprimos con n.\\
-Si bien existen muchos criterios para encontrar numeros primos, como el test de  Willson, la idea principal del algoritmo
-es que el criterio en el cual se basa el algoritmo tiene una cota lo suficientemente buena para
-lograr una complejidad polinomial menor a la que ya se tenia.
-
+A lo largo de la historia, los matemáticos han desarrollado un
+interés intrínseco por encontrar números primos. Sus propiedades
+abarcan todas las áreas de las matemáticas, llegando desde su
+origen en la teoría de números hasta áreas del álgebra y la
+geometría. Es por esto que, desde los griegos, se busca una manera
+de encontrar primos de diferentes formas.\\
+Con el tiempo, los matemáticos encontraron muchos métodos. El más antiguo
+y más sencillo de aplicar es el método de la criba de Eratóstenes, que
+consiste en calcular la raíz cuadrada del número del que se quiere saber
+si es primo o no. Si la raíz es un entero, entonces el número es un cuadrado
+perfecto, por tanto, no es primo. De lo contrario, se calcula el piso de la raíz y
+se miran los números primos menores a este número: si alguno de ellos
+divide al número, quiere decir que el número no es primo.\\
+La gran mayoria de estos métodos pasan por alto lo siguiente,
+y es que el número de primos menores a un número $n$ es aproximadamente
+$\frac{\sqrt{n}}{\log(\sqrt{n})}$. Lo que hace que el método de la criba de
+Eratóstenes tenga una complejidad de $\mathit{O}\!\left(\frac{\sqrt{n}}{\log(\sqrt{n})}\right)$,
+que no es polinomial.\\
+Esto quiere decir que, aunque el método da un resultado
+correcto, no es un método eficiente para encontrar números primos.
+Otro método que se usaba anteriormente era basado en el pequeño teorema
+de Fermat. Este dice que, que si $p$ es un número primo y $a$ es un número entero
+que no es divisible por $p$, entonces $a^{p-1} \equiv 1 \pmod{p}$. Este método
+se pensaba útil para encontrar si un numero $n$ es primo, pues el algoritmo consiste en
+elegir un número $a$ y calcular $a^{n-1} \bmod n$; si el resultado es diferente de $1$, entonces $n$ no es primo,
+y se prueba con los valores de $a<n$. Sin embargo, este método no es correcto. A pesar de ser polinomial, existen números compuestos llamados pseudoprimos de Fermat, o números de Carmichael, que cumplen con
+esta propiedad para todos los valores de $a$ que sean coprimos de $n$.\\
+Si bien existen muchos criterios para encontrar números primos, como el test de Wilson, la idea principal del algoritmo
+es que: el criterio en el que se basa tiene una cota lo suficientemente buena para
+lograr una complejidad polinomial menor a la que ya se tenía.
+La siguiente demostración parte del artículo original de \cite{AKS04}.
 \section{Algoritmo AKS}
 
 Para iniciar la demostracion de este algoritmo, vamos a demostrar el criterio esencial el cual
@@ -62,25 +61,25 @@ es muy similar al Pequeño teorema de Fermat, pero con una cota mucho mas estric
 \end{teo}
 
 \begin{dem}
-    Para demostrar la implicacion directa suponga que n es primo entonces por teorema binomial se tiene que:
-\begin{align*}
-(x+a)^n &= \sum_{k=0}^n \binom{n}{k} x^{n-k} a^k \\
-&= x^n + a^n \mod n(x)
-\end{align*}
-pues cada termino de $\binom{n}{k}$ con $1\leq k \leq n-1$ es divisible por n pues siempre esta el coeficiente de n en el numerador.
-Esto deja que $(x+a)^n \equiv x^n + a^n \mod n(x)$ y por pequeño teorema de Fermat se tiene que $a^n \equiv a \mod n$ y por tanto $(x+a)^n \equiv x^n + a \mod n(x)$.\\
-Para la suficiencia suponga que n es compuesto, entonces existe un primo $q$ tal que $q|n$ y considere $k\in \N$ tal que $q^k||n$. Note ahora que $q^k \not| \binom{n}{q}$ pues 
-$\binom{n}{q}=\frac{n!}{q!(n-q!)}=\frac{(n-1)!m}{(q-1)!(n-q)!}$ dejando que $q^{k-1}|m \to q^k\not|\binom{n}{q}$. Como $(a,n)=1$ entonces $q^k\not|a \to q^k\not|a^r \forall r\in \N$, 
-dejando que como $(q^k,a^{n-q})=1$ entonces el coeficiente en la expancion binomial del termino $x^q$ no va a ser 0 modulo n y por tanto $(x+a)^n - x^n + a a \neq 0 \mod n(x)$ dando a lugar a una contradiccion
+    Para demostrar la implicacion directa suponga que n es primo, entonces por teorema binomial se tiene que:
+    \begin{align}
+        (x+a)^n &= \sum_{k=0}^n \binom{n}{k} x^{n-k}a^k\\
+        &\equiv x^n + a^n \mod n(x)
+    \end{align}
+pues cada termino de $\binom{n}{k}$ con $1\leq k \leq n-1$ es divisible por n ya que siempre esta el coeficiente de n en el numerador.
+Esto deja que $(x+a)^n \equiv x^n + a^n \mod n(x)$. Por pequeño teorema de Fermat se tiene que $a^n \equiv a \mod n$ y por tanto $(x+a)^n \equiv x^n + a \mod n(x)$.\\
+Para la suficiencia suponga que n es compuesto, entonces existe un primo $q$ tal que $q|n$ y considere $k\in \N$ tal que $q^k||n$. Note que $q^k \not| \binom{n}{q}$ pues 
+$\binom{n}{q}=\frac{n!}{q!(n-q!)}=\frac{(n-1)!m}{(q-1)!(n-q)!}$ dejando que $q^{k-1}|m \to q^k\not|\binom{n}{q}$. Como $(a,n)=1$ entonces $q^k\not|a \to q^k\not|a^r \forall r\in \N$. 
+Como $(q^k,a^{n-q})=1$ el coeficiente en la expancion binomial del termino $x^q\neq 0 \mod n$. Por tanto $(x+a)^n - x^n + a \neq 0 \mod n(x)$ dando a lugar a una contradiccion
 
 \end{dem}
 
 \subsection{Notaciones}
-Defina el orden multiplicativo de n modulo r como el menor entero positivo k tal que $n^k \equiv 1 \mod r$ equivalente a el orden en $\Z_r^*$ y se denota por $O_r(n)$, 
-es importante aclarar que el orden solo tiene sentido si $(n,r)=1$.\\
+Defina el orden multiplicativo de n modulo r como el menor entero positivo k tal que $n^k \equiv 1 \mod r$ equivalente al orden en $\Z_r^*$ y se denota por $O_r(n)$.
+Es importante aclarar que el orden solo tiene sentido si $(n,r)=1$.\\
 $\Z_n$ denota el anillo con elementos modulo n, y $\F_p$ denota el campo con p elementos, es decir $\Z_p$ con p primo.\\
 Si $h(x)$ es un polinomio de grado d entonces $\F[x]/(h(x))$ denota el cuerpo finito de orden $p^d$. Decimos que $f(x) \equiv g(x) \mod h(x), n$ para representar que $f(x)$ y $g(x)$ son equivalentes en el anillo $\Z_n[x]/(h(x))$.\\
-$\phi(n)$ denota la funcion de Euler totient, es decir el numero de enteros positivos menores a n que son coprimos con n.\\
+$\phi(n)$ denota la funcion de Euler totient, es decir el numero de enteros positivos menores a n que son coprimos a n.\\
 
 Para explicar la complejidad temporal del algoritmo, usaremos el símbolo $\tilde{O}(t(n))$ para denotar $O(t(n)) \cdot \text{poly}(\log t(n))$,
 donde $t(n)$ es cualquier función de $n$.  Por ejemplo,
@@ -91,7 +90,7 @@ y $\ln$ para el logaritmo natural. \\
 
 Ahora con este resultado podemos empezar a entrar mas a profundidad en el algoritmo. Si bien es un resultado muy importante en las matematicas
 su importancia no es proporcional con su dificultad a diferencia de muchas otras cosas dentro del area. Es un poco contraintuitivo que 
-un resultado asi se demorase tanto en ser descubierto puesto que el conocimiento de aqui en adelante para demostrar el algoritmo es un conocimiento
+un resultado asi se demorase tanto en ser descubierto puesto que, el conocimiento de aqui en adelante para demostrar el algoritmo es un conocimiento
 de pregrado de matematicas y posiblemente menos para ser demostrado en su totalidad. A tal efecto que quienes lo demostraron fueron estudiantes.\\
 
 
@@ -102,9 +101,9 @@ de pregrado de matematicas y posiblemente menos para ser demostrado en su totali
 \hline
 \\
 \texttt{Entrada:}\quad entero $n > 1$.\\[6pt]
-\texttt{1.}\quad Si $(n = a^b$ Para $a \in \N$ y $b > 1)$, retorne \texttt{Compuesto}.\\[6pt]
+\texttt{1.}\quad Si $(n = a^b$ para $a \in \N$ y $b > 1)$, retorne \texttt{Compuesto}.\\[6pt]
 \texttt{2.}\quad Encuentre el $r$ mas pequeño tal que $\mathrm{o}_r(n) > \log^2 n$.\\[6pt]
-\texttt{3.}\quad Si $1 < (a, n) < n$ Para algun $a \leq r$, retorne \texttt{Compuesto}.\\[6pt]
+\texttt{3.}\quad Si $1 < (a, n) < n$ para algun $a \leq r$, retorne \texttt{Compuesto}.\\[6pt]
 \texttt{4.}\quad Si $n \leq r$, retorne \texttt{Primo}.$^1$\\[6pt]
 \texttt{5.}\quad Desde $a = 1$ hasta $\lfloor\sqrt{\phi(r)}\log n\rfloor$ haga lo siguiente:\\[4pt]
 \qquad\qquad Si $\left((X + a)^n \neq X^n + a \pmod{X^r - 1,\, n}\right)$, retorne \texttt{Compuesto};\\[6pt]
@@ -123,7 +122,7 @@ Sea $L(m) = \text{mcm}(1, 2, \dots, m)$. Para todo $m \ge 7$, se cumple que:
 
 \begin{dem}
 La demostración se basa en el estudio de la integral:
-$ I_n = \int_{0}^{1} x^n (1-x)^n dx $
+$ I_n = \int_{0}^{1} x^n (1-x)^n dx $.
 Es un resultado conocido que $L(2n+1) I_n$ es un entero positivo. Dado que $I_n = \frac{(n!)^2}{(2n+1)!}$, tenemos:
 \begin{equation}
 L(2n+1) \ge \frac{(2n+1)!}{(n!)^2} = (2n+1) \binom{2n}{n}
@@ -147,7 +146,7 @@ Ahora vamos a demostrar las dos implicaciones del teoremaque van a terminar dand
     Si n es primo entonces el algoritmo retorna \texttt{Primo}.
 \end{teo}
 \begin{dem}
-    Como n es primo entonces no se cumple ni el paso 1 ni el 3 por definicion de ser primo. Ahora por el teorema 1 se tiene que n no puede cumplir el paso 5, pues si n es primo entonces se cumple que $(x+a)^n \equiv x^n + a \mod n(x)$ para todo a, y por tanto el algoritmo retorna \texttt{Primo} sin importar en que paso lo retorne.
+    Como n es primo entonces no se cumple el paso 1 ni el 3 por definicion de ser primo. Ahora por el teorema 1 se tiene que n no puede cumplir el paso 5, pues si n es primo entonces $(x+a)^n \equiv x^n + a \mod n(x)$ para todo a. Por tanto el algoritmo retorna \texttt{Primo} sin importar en que paso lo retorne.
 \end{dem}
 De ahora en adelante el logaritmo siempre se va a tomar en base 2 a menos que se indique lo contrario
 \begin{lem}
@@ -155,12 +154,12 @@ De ahora en adelante el logaritmo siempre se va a tomar en base 2 a menos que se
 \end{lem}
 Este resultado nos es util pues para el paso 2 del algoritmo necesitamos encontrar este r y es importante que este r no sea tan grande para que el algoritmo siga siendo polinomial.\\
 \begin{dem}
-    Note que para $n=2,r=3$ se cumple la condicion trivialmente pues $max\{3,\lceil \log^5 n \rceil =1\} =3$ y $O_3(2)=2>1=\log^2(2)$. Suponga que $n>2$ entonces como $\log n \geq \log 3 \geq \sqrt[5]{10}$
-    Entonces  $\log^5 n \geq 10$ y $\lceil\log^5 n \rceil\ge 10$. Considere $r_1,r_2,\dots,r_t$ tales que $O_{r_i}(n)\leq \log^2 n$ o $r_i|n$, entonces todos los $r_i$ dividen al siguiente producto: \\
+    Note que para $n=2,r=3$ se cumple la condicion trivialmente pues $max\{3,\lceil \log^5 n \rceil =1\} =3$ y $O_3(2)=2>1=\log^2(2)$. Suponga que $n>2$ entonces como $\log n \geq \log 3 \geq \sqrt[5]{10}$.
+    Entonces  $\log^5 n \geq 10$ y $\lceil\log^5 n \rceil\ge 10$. Considere $r_1,r_2,\dots,r_t$ tales que $O_{r_i}(n)\leq \log^2 n$ o $r_i|n$, luego todos los $r_i$ dividen al siguiente producto: \\
     \begin{align}
         n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)
     \end{align}
-    puesto que si $r_i|n$ se tiene trivialmente, y si $O_{r_i}(n)\leq \log^2 n$ entonces el orden de $r_i$ debe estar en el intervalo de $[1,\log^2n]$ entonces, en particular, estan todos los ordenes de todos los $r_i$
+    puesto que si $r_i|n$ se tiene trivialmente, y si $O_{r_i}(n)\leq \log^2 n$ entonces el orden de $r_i$ debe estar en el intervalo de $[1,\log^2n]$. En particular, estan todos los ordenes de todos los $r_i$
     que no dividen a n. Por otro lado, 
     \begin{align}
         P=n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)\le n^{\log^4n}\leq 2^{\log^5n}
@@ -170,55 +169,55 @@ Este resultado nos es util pues para el paso 2 del algoritmo necesitamos encontr
     n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1)\le n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i)\le n^{2\lfloor\log^2n\rfloor} \le n^{2\log^2n} = n^{\log^4n}
     \end{align}
     ahora por el lema 1 se tiene que $L(\lceil\log^5 n\rceil) \geq 2^{\lceil\log^5 n\rceil} > 2^{\log^5 n} = n^{\log^4 n}$, lo que implica que $n\prod_{i=1}^{\lfloor\log^2n\rfloor} (n^i -1) < L(\lceil\log^5 n\rceil)$,
-    lo que implica que debe existir un $s\leq \lceil\log^5 n\rceil$ tal que $s$ no es un $r_i$, es decir, $O_s(n) > \log^2 n$ y $s$ no divide a n. Ahora si $(s,n)=1$ queda demostrado el lema,
-    si $(s,n)>1$ entonces $s|n$ o $O_s(n) \leq \log^2 n$. Defina $r=\frac{s}{(s,n)}$
+    dejando que debe existir un $s\leq \lceil\log^5 n\rceil$ tal que $s$ no es un $r_i$. Es decir, $O_s(n) > \log^2 n$ y $s$ no divide a n. Ahora si, $(s,n)=1$ queda demostrado el lema.
+    Si $(s,n)>1$ entonces $s|n$ ó $O_s(n) \leq \log^2 n$. Defina $r=\frac{s}{(s,n)}$,
     veamos que $r\notin\{r_1,r_2,\dots,r_t\}$, pues si $r=r_i$ entonces hay dos casos, $r|P$ o $O_{r_i}(n)\leq \log^2 n$. 
-    Si $O_{r_i}(n)\leq \log^2 n$ y $(r_i,n)=1$ entonces defina $d=(s,n)$, entonces $(r,d)=1$ pues tanto r como d dividen a P entonces como tienen 
-    minimo comun divisor 1 entonces $rd|P$ lo que es una contradiccion pues $s=r(s,n)|P$ lo que es una contradiccion pues $s$ no es un $r_i$.
-    Ahora si $r|n$ entonces veamos que $(r,d)=1$, suponga que no entonces existe un primo $q$ tal que $q|r$ y $q|d$, pero como $q|s,q|n$ entonces $qd|s$ y $qd|n$
-    dejando asi que $qd|d$ entonces $q=1$ contradiccion entonces como $(r,d)=1$ entonces por el argumento de antes queda que $s|n$ contradiccion.\\
+    Si $O_{r_i}(n)\leq \log^2 n$ y $(r_i,n)=1$. Entonces defina $d=(s,n)$, es claro que $(r,d)=1$ pues tanto r como d dividen a P. Como tienen 
+    minimo comun divisor 1, $rd|P$ lo que es una contradiccion pues $s=r(s,n)|P$ pues $s$ no es un $r_i$.
+    Ahora si $r|n$ veamos que $(r,d)=1$. Suponga que no entonces existe un primo $q$ tal que $q|r$ y $q|d$ pero, como $q|s,q|n$ entonces $qd|s$ y $qd|n$
+    dejando asi que $qd|d$ luego $q=1$ contradiccion. Entonces como $(r,d)=1$ por el argumento de antes queda que $s|n$, contradiccion.\\
 \end{dem}
-Con este lema podemos ir avanzando en los pasos del algoritmo, sabemos que el paso 1 ya no se cumple pues de lo contrario claramente 
-habria retornado compuesto. Supongamos que el paso 1 no dio como resultado compuesto, ahora por el anterior lema podemos ejecutar el 
-paso 2 sin problemas pues sabemos que existe un r. Ahora como sabemos que $O_r(n)>1$ entonces por Teorema de Lagrange debe existir un 
-divisor primo de n, p, tal que $O_r(p)>1$. Ahora $p>r$ pues si $p\leq r$ entonces el paso 3 del algoritmo hubiera retornado compuesto,
-por otro lado, si $n\leq p$ entonces esto deberia retornar primo pues tenemos un numero cuyo orden no es potencia de ninguno de los anteriores
-en un $\Z_r^*$ que es un grupo donde $n$ tiene orden $O_r(n)$ talque $O_r(p)|O_r(n)$ pero $O_r(p)$ es el orden del gurpo entonces n 
+Con este lema podemos ir avanzando en los pasos del algoritmo. Sabemos que el paso 1 ya no se cumple, pues de lo contrario, 
+habria retornado compuesto. Supongamos que el paso 1 no dio como resultado compuesto, ahora, por el anterior lema podemos ejecutar el 
+paso 2 sin problemas pues sabemos que existe un r. Ahora $O_r(n)>1$, por Teorema de Lagrange debe existir un 
+divisor primo de n, p, tal que $O_r(p)>1$. Sea $p>r$ pues si $p\leq r$ entonces el paso 3 del algoritmo hubiera retornado compuesto. 
+Por otro lado, si $n\leq p$ entonces esto deberia retornar primo ya que tenemos un numero cuyo orden no es potencia de ninguno de los anteriores
+en un $\Z_r^*$. Este es un grupo donde $n$ tiene orden $O_r(n)$ tal que $O_r(p)|O_r(n)$, pero $O_r(p)$ es el orden del grupo, entonces n 
 tiene que ser primo obligatoriamente.\\
-Ahora tenemos que $p\ge r$ y por el paso 2 que $(n,r)=1$, de ahora en adelante tanto p como r van a estar fijos.
+Ahora tenemos que $p\ge r$ y por el paso 2 que $(n,r)=1$, de ahora en adelante este $p$ y este $r$ van a estar fijos. 
 Sea $\it{l}=\lfloor \sqrt{\phi(r)}\log n \rfloor$, el algoritmo ahora en el paso 5 va a verificar $\it l$ ecuaciones.
 Suponga que el algoritmo no retorna compuesto en el paso 5 entonces tenemos que 
 
-\begin{align}
+\begin{align*}
     (x+a)^n \equiv x^n + a \mod(x^r - 1, n), \forall a \in[0,\it{l}]
-\end{align}
+\end{align*}
 
 Pero como $p|n$ entonces tenemos que 
 
-\begin{align}
+\begin{align*}
     (x+a)^n \equiv x^n + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
-\end{align}
+\end{align*}
 
-Ahora por el teorema 1 se tiene que 
+Ahora, por el teorema 1 se tiene que 
 
-\begin{align}
+\begin{align*}
     (x+a)^p \equiv x^p + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
-\end{align}
+\end{align*}
 
-Como en un cuerpo de caracterisitica p, elevar a la p es inyectivo, pues
-\begin{align}
+Como en un cuerpo de caracteristica p, elevar a la p es inyectivo, pues
+\begin{align*}
     f(x) = g(x) \to f(x) - g(x) = 0 \to (f(x) - g(x))^p = 0 \to f(x)^p - g(x)^p = 0  \to f(x)^p = g(x)^p \mod p
-\end{align}
+\end{align*}
 
 Entonces por las ecuaciones anteriores note que 
 
-\begin{align}
+\begin{align*}
     (x+a)^{(n/p)p} = (x+a)^n = x^n + a = x^{(n/p)p} + a = (x^{n/p}+a)^p\mod(x^r - 1, p), \forall a \in[0,\it{l}] 
-\end{align}
+\end{align*}
 Dejando que 
-\begin{align}
+\begin{align*}
     (x+a)^{(n/p)p} \equiv x^{(n/p)p} + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]
-\end{align}
+\end{align*}
 Y como sabemos que elevar a la p es inyectivo queda el $(x+a)^{(n/p)} \equiv x^{(n/p)} + a \mod(x^r - 1, p), \forall a \in[0,\it{l}]$\\
 Esta propiedad la vamos a llamar introspectividad y va a ser importante mas adelante.\\
 
@@ -275,22 +274,30 @@ $|\mathcal{G}|\geq \binom{t+l}{t-1}$
     \begin{align}
         Q_r(x)\mid x^r-1 \to h(x)\mid x^r-1 \to \overline{x^r-1}=\overline{0} \text{ en } F
     \end{align}
-    Sean $f(x),g(x)$ polinomios tal que $deg(f(x)),deg(g(x))<t$. Queremos ver que si $f(x)\neq g(x)$ entonces $\overline{f(x)}\neq \overline{g(x)}$. Suponga que $\overline{f(x)}=\overline{g(x)}$ en $F$.Para $m \in I$ tenemos que $\overline{[f(x)]^m}=\overline{[g(x)]^m}$ en $F$. Como $h(x)\mid x^r-1$, entonces $\overline{f(x^m)}=\overline{g(x^m)}$.
-    Como tomamos $m$ arbitrario tenemos que $\forall m \in I: \overline{x^m}$ es raíz de $\overline{Q(y)}:=\overline{f(y)-g(y)}$. Como $gcd(m,r)=1$, entonces $\overline{x^m}$ es r-ésima raíz primitiva de la unidad. Así, hay $|G|=t$ raíces distintas de $\overline{Q(y)}$ en $F$; pero $deg(Q(y))<t$ lo que es una contradicción. Debe ocurrir que $\overline{f(x)}=\overline{g(x)}$ en $F$.
-    Ahora, como $l=\lfloor \sqrt{\phi(r)}\log n\rfloor<\lfloor\sqrt{r}\log n\rfloor \leq \sqrt{r}\log n<r$ (la útlima desigualdad ya que $o_r(n)\leq \phi(r)$) y $\phi(r)<r$, entonces $\log^2n<o_r(n)\leq \phi(r)<r$ por lo que $l<rr$ y $p>r$. Tenemos que si $1\leq i \neq j \leq l$ se tiene que $\overline{i} \neq \overline{j}$ en $\F_p$.
-    Obtenemos que $\overline{x}, \overline{x+1}, \dots, \overline{x+l}$ son distintos en $F$. Como $deg(h(x))\geq 2, entonces \overline{x+a} \neq \overline{0}$ para $0\leq a \leq l$. Concluimos que existen $l+1$ polnomios distintos de grado $1$ en $\mathcal{G}$ y así existen al menos $\binom{t+(l+1)-1}{t-1}=\binom{t+l}{t-1}$ polinomios distintos de grado $<t$ en $\mathcal{G}$.
+    Sean $f(x),g(x)$ polinomios tal que $deg(f(x)),deg(g(x))<t$. Queremos ver que si $f(x)\neq g(x)$ entonces $\overline{f(x)}\neq \overline{g(x)}$. Suponga que $\overline{f(x)}=\overline{g(x)}$ en $F$. Para $m \in I$ tenemos que $\overline{[f(x)]^m}=\overline{[g(x)]^m}$ en $F$. Como $h(x)\mid x^r-1$, entonces $\overline{f(x^m)}=\overline{g(x^m)}$.
+    Puesto que $m$ es arbitrario tenemos que $\forall m \in I: \overline{x^m}$ es raíz de $\overline{Q(y)}:=\overline{f(y)-g(y)}$. Como $gcd(m,r)=1$, entonces $\overline{x^m}$ es r-ésima raíz primitiva de la unidad. Así, hay $|G|=t$ raíces distintas de $\overline{Q(y)}$ en $F$; pero $deg(Q(y))<t$ lo que es una contradicción. Debe ocurrir que $\overline{f(x)}=\overline{g(x)}$ en $F$.
+    Ahora, como
+    \begin{align*}
+         l=\lfloor \sqrt{\phi(r)}\log n\rfloor<\lfloor\sqrt{r}\log n\rfloor \leq \sqrt{r}\log n<r
+    \end{align*}
+    Y se tiene la útlima desigualdad ya que $o_r(n)\leq \phi(r)$) y $\phi(r)<r$. Entonces $\log^2n<o_r(n)\leq \phi(r)<r$ por lo que $l<r$ y $p>r$. Tenemos que, si $1\leq i $, $j \leq l$ y $i\neq j$ se tiene que $\overline{i} \neq \overline{j}$ en $F_p$.
+    Obtenemos que $\overline{x}, \overline{x+1}, \dots, \overline{x+l}$ son distintos en $F$. Como $deg(h(x))\geq 2$, entonces $ \overline{x+a} \neq \overline{0}$ para $0\leq a \leq l$. Concluimos que existen $l+1$ polnomios distintos de grado $1$ en $\mathcal{G}$ y así existen al menos $\binom{t+(l+1)-1}{t-1}=\binom{t+l}{t-1}$ polinomios distintos de grado menor a t en $\mathcal{G}$.
 \end{dem}
 Seguimos con un un último lema que nos ayudará con la caracterización de $n$:
 \begin{lem}
 Si $n$ no es potencia de $p$, entonces $|\mathcal{G}|\leq n^{\sqrt{t}}$
 \end{lem}
 \begin{dem}
-    Sea $\hat{I}=\{\left(\frac{n}{p}\right)^i p^j \mid 0 \leq i,j \leq \left\lfloor \sqrt{t} \right\rfloor \} \subseteq I$. Note que $\forall i,j : (\frac{n}{p})^ip^j$ es único por lo que $|\hat{I}|=(\lfloor \sqrt{t} \rfloor + 1)^2>t$. Deben existir $m_1,m_2 \in \hat{I} tal que m_1 \equiv m_2 \mod r$. Sin pérdida de la generalidad, suponga que $m_1>m_2$. Tenemos que $x^{m_1} \equiv x^{m_2} \mod x^r-1$
+    Sea $\hat{I}=\{\left(\frac{n}{p}\right)^i p^j \mid 0 \leq i,j \leq \left\lfloor \sqrt{t} \right\rfloor \} \subseteq I$. Note que $\forall i,j : (\frac{n}{p})^ip^j$ es único por lo que $|\hat{I}|=(\lfloor \sqrt{t} \rfloor + 1)^2>t$. Deben existir $m_1,m_2 \in \hat{I}$ tal que $m_1 \equiv m_2 \mod r$. Sin pérdida de la generalidad, suponga que $m_1>m_2$. Tenemos que $x^{m_1} \equiv x^{m_2} \mod x^r-1$
     Sea $f(x) \in P$. Entonces 
     \begin{align}
     [f(x)]^{m_1} \equiv f(x^{m_1}) \equiv f(x^{m_2}) \equiv [f(x)]^{m_2} \mod x^r-1 \to \overline{[f(x)]^{m_1}}=\overline{[f(x)]^{m_2}} \text{ en } F
     \end{align}
-    Así, $\overline{f(x)} \in \mathcal{G}$ es raíz de $\overline{Q'(y)}:=\overline{y^{m_1}-y^{m_2}}$ en $F$. Como tomamos $f(x)$ arbitrario, entonces $\overline{Q'(y)}$ tiene al menos $|\mathcal{G}|$ raíces distintas en $F$. Además, $deg(Q'(y))=m_1$ por construcción, y tenemos que  $\exists i,j : m_1=(\frac{n}{p})^ip^j\leq (\frac{n}{p})^{\lfloor \sqrt{t} \rfloor}p^{\lfloor \sqrt{t} \rfloor}=n^{\lfloor \sqrt{t} \rfloor}\leq n^{\sqrt{t}}$. Como $|\mathcal{G}|\leq m_1$, entonces $|\mathcal{G}|\leq n^{\sqrt{t}}$. 
+    Así, $\overline{f(x)} \in \mathcal{G}$ es raíz de $\overline{Q'(y)}:=\overline{y^{m_1}-y^{m_2}}$ en $F$. Como tomamos $f(x)$ arbitrario, entonces $\overline{Q'(y)}$ tiene al menos $|\mathcal{G}|$ raíces distintas en $F$. Además, $deg(Q'(y))=m_1$ por construcción, y tenemos que  
+    \begin{align}
+        \exists i,j : m_1=(\frac{n}{p})^ip^j\leq (\frac{n}{p})^{\lfloor \sqrt{t} \rfloor}p^{\lfloor \sqrt{t} \rfloor}=n^{\lfloor \sqrt{t} \rfloor}\leq n^{\sqrt{t}} 
+    \end{align}
+    Como $|\mathcal{G}|\leq m_1$, entonces $|\mathcal{G}|\leq n^{\sqrt{t}}$. 
 \end{dem}
 Con todos los reultados anteriores, podemos demostrar la implicacion reciproca del teorema 1 y mostrar la validez del algoritmo.\\
 \begin{teo}
@@ -361,7 +368,7 @@ de $m$ bits requieren tiempo $\tilde{O}(m)$ \cite{vzGG99}. Esto se debe a que ex
 eficientes de multiplicación, como el de Karatsuba, que
 realizan estas operaciones en tiempo casi lineal respecto al número de bits. De manera
 análoga, si trabajamos con polinomios de grado $d$ cuyos coeficientes tienen a lo sumo
-$m$ bits, las mismas operaciones toman tiempo $\tilde{O}(d \cdot m)$ \cite{vzGG99}, pues ahora debemos
+$m$ bits, las mismas operaciones toman tiempo $\tilde{O}(d \cdot m)$ \cite{vzGG99}. Ahora debemos
 operar sobre $d$ coeficientes, cada uno de $m$ bits, lo que multiplica el costo
 por un factor de $d$. \\
 
